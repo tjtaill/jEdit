@@ -1,0 +1,9 @@
+source (MiscUtilities.constructPath(dirname(scriptPath), "Select_Between.bsh"));
+
+if (textArea.getSelectionCount() == 0) {
+  selectBetween(" ", " ");    
+}
+
+if (textArea.getSelectionCount() > 0) {
+  
+}

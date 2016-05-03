@@ -1,0 +1,4 @@
+fileName = buffer.getName();
+tempDir = System.getProperty("java.io.tmpdir");
+copyTo = tempDir + "\\" + fileName;
+buffer.save(view, copyTo, false, true);

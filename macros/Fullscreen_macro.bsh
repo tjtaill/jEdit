@@ -1,0 +1,12 @@
+
+GraphicsConfiguration gc = view.getGraphicsConfiguration();
+GraphicsDevice gd = gc.getDevice();
+
+view.dispose();
+if (view.isUndecorated())
+    view.setUndecorated(false);
+else
+    view.setUndecorated(true);
+gd.setFullScreenWindow(view);
+view.show();
+

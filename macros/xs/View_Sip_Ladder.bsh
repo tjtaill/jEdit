@@ -1,0 +1,35 @@
+source (MiscUtilities.constructPath(dirname(scriptPath), "Get_Current_Directory.bsh"));
+
+oldPath = path = buffer.getPath();
+newPath = "";
+if ( oldPath.startsWith("sftp://") ) {
+  // copy buffer file to temp directory
+  fileName = buffer.getName();
+  tempDir = System.getProperty("java.io.tmpdir");
+  copyTo = tempDir + fileName;
+  buffer.save(view, copyTo, false, true);
+  newPath = copyTo.split("\\.")[0] + ".svg";    
+  command = "\"C:\\programs\\sip-viewer\\xsSipChToSvg.bat\" " +  copyTo;    
+  runCommandInConsole(view,"System", command);
+  waitForConsole(view);  
+} else {
+  console.ConsolePlugin.compile(view,buffer);
+  waitForConsole(view);  
+  newPath = buffer.getPath().split("\\.")[0] + ".svg";
+}
+
+wm.showDockableWindow("batik-svg-viewer");
+svgViewer = wm.getDockableWindow("batik-svg-viewer");
+svgViewer.openSvg(editPane, newPath);
+
+
+
+/*
+view.splitVertically();
+editPanes = view.getEditPanes();
+waitForConsole(view);
+jEdit.openFile(editPanes[1], newPath);
+*/
+
+
+

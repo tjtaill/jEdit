@@ -1,0 +1,279 @@
+
+/**
+ * File: LaTeX_Menu_Manager.bsh
+ * Purpose: Define the class ModeMenuManager that does the following when used:
+ * When a user switches into another buffer check whether it is in the (la)tex mode
+ * and if so copy LaTeX Tool Plugin's menu to the menu bar next to "Help" 
+ * (i.e. create a top-most menu for it). When the buffer is left remove it.
+ * 
+ * It could be easily modified for another mode/menu combination or even to handle
+ * more modes menus.
+ * 
+ * The inner class starts listening on the EditBus until a view is created. At
+ * that moment it creates a new ModeMenuManager for the view and removes self
+ * from the bus listeners.
+ * 
+ * To use this macro:
+ * 1. Store this file in jEdit user startup directory (e.g. $HOME/.jedit/startup)
+ * A.2. Create in the jEdit user startup directory a .bsh file with a single line:
+ * <code>_myModeMenuManagerXQ953 = new ModeMenuManager.InitialRegistrator();</code>
+ * (you can use the variable to remove the mode manager later on - see its remove())
+ * A.3. Remove the lines at the end of this file that do the same.
+ * OR
+ * B.2 ignore the steps A.2, A.3 and you are done.
+ *
+ * Requirements:
+ * The plugin LaTeX Tools must be installed.
+ *
+ * @author Jakub Holy, maly.velky@email.cz
+ * @date Dec 30, 2005
+ */
+public class ModeMenuManager
+implements org.gjt.sp.jedit.EBComponent
+{
+	
+	View theView;
+	DockableWindowManager wm;	
+	javax.swing.JMenuBar menuBar;
+	Buffer 				 buffer 		= null;
+	/** Store the menu we've added so we can remove it when needed. */
+	javax.swing.JMenuItem addedMenu 	= null;
+	/** We're waiting for the 1st active buffer to get loaded. */
+	boolean 			waitFor1stBuff 	= true;
+	
+	/** Singleton.*/
+	public static Object theModeMenuManager = null;
+	
+	/** The modes for which to perform the given action */
+	static final String[]  MODES = new String[]{"tex", "latex"};
+	
+	/** The plugin to activate when in one of the given modes */
+	static final String  PLUGIN_CLASS = "uk.co.antroy.latextools.LaTeXPlugin";
+	static final String  PLUGIN_NAME  = "LaTeX Tools";
+	
+	/* // BeanShell doesn't manage to delcare this
+	public static ModeMenuManager getModeMenuManager( View view )
+	{
+		return (theModeMenuManager != null)? theModeMenuManager : 
+			new ModeMenuManager(view);
+	}
+	//*/
+	/** Create a new instance and register to the bus if this is the 1st instance. */
+	public ModeMenuManager( View view ) 
+	{
+		// TODO: it's better to reinitialize always (user could have switched views...)		
+		theView = view;
+		wm = view.getDockableWindowManager();		
+		menuBar = view.getJMenuBar();						
+		
+		// Start listening for jEdit events
+		if (theModeMenuManager == null)
+		{
+			theModeMenuManager = this;
+			EditBus.addToBus( this );		
+			Log.log( Log.DEBUG, this, "Listening for bus events..." );
+		}
+		
+		// Check whether the given plugin is present		
+		Object plugin = jEdit.getPlugin( PLUGIN_CLASS, true );
+		if ( plugin == null )
+		{
+			Log.log( Log.DEBUG, this, "ERROR: the plugin " + PLUGIN_CLASS
+				+ " ("+PLUGIN_NAME+") is not available." );
+			Macros.error( view , 
+			"LaTeX_Menu_Manager.bsh: Sorry but it seems that the necessary\n" +
+			"plugin of the class \"" + PLUGIN_CLASS + "\" is not available.\n" +
+			"Thus this macro won't work. Please remove it from your startup\n" +
+			"directory or install the missing plugin ( perhaps the plugin \""+
+			PLUGIN_NAME+"\" )."
+			);
+		}
+	} // constr
+	
+	/** @return true if the given action should be performed for the mode modeName. */
+	boolean doApplyForMode(String modeName)
+	{
+		//String mode = (modeName != null)? modeName : buffer.getMode().getName();
+		// For all my modes:
+		for(int i = 0; i < MODES.length; ++i)
+		{
+			if(MODES[i].equals( modeName ))
+			{ 
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/** Add/remove mode-related menu when buffer mode has changed (e.g. buffers switched). */
+	void manageBufferModeChng()
+	{				
+		Log.log( Log.DEBUG, this, "ENTRY: manageBufferModeChng!" );
+		buffer = theView.getBuffer();
+		// can't get mode until done loading
+		if(!buffer.isLoaded())
+		{
+			VFSManager.waitForRequests();
+		}
+		
+		if( doApplyForMode(buffer.getMode().getName()) )
+		{
+			Log.log( Log.DEBUG, this, "manageBufferModeChng: buffer is in (la)tex =>"
+				+"going to create the menu if not present already" );
+			// Check that the menu haven't been created already
+			if ( addedMenu != null ) { return; }
+			/* IDEA:
+			* Vytvor objekt - listener/observer na EditBus (pri startu jeditu), ktery
+			* pri akci EditPaneUpdate.BUFFER_CHANGED podle buffer.getMode().getName()
+			* prida nove menu/ odebere menu z minuleho modu
+			* Ma 2 pole: ptr na view.getJMenuBar() a HashMap ("mode name", JMenu)
+			* Kdyz menu pro dany mod jeste neexistuje, tak ho vytvori a vlozi.
+			* Pozn.: Ale dela tak jen pro nektere, podporovane mody 
+			* (this.isModeSupported( name ); ) Pro podporovane mody existuje
+			* v hashi vstup od vytvoreni objektu?
+			*/
+			// Create a copy of the menu ...				
+			// menu = new javax.swing.JMenu("Menu Label")
+			// menu.setMnemonic( java.awt.event.KeyEvent.VK_M )
+			
+			// Create & add menu (a submenu or an item) for the given plugin
+			addedMenu = createMenuItems( PLUGIN_CLASS );
+			if( addedMenu == null ) 
+				{ return; }
+			menuBar.add( addedMenu );
+			menuBar.repaint(); // Inportant: there may be a small delay ( < 2 sec)
+		} 
+		else
+		{
+			// Remove the last menu == the one we've added
+			// but only if it hasn't been removed already or never created
+			/*if ( jEdit.getLastBuffer().getMode().getName().equals("tex") )*/ {
+				//javax.swing.JMenu lastMenu = menuBar.getMenu( menuBar.getMenuCount() - 1 );
+				Log.log( Log.DEBUG, this, "manageBufferModeChng: not (la)tex and menu not created => doing nothing." );
+				if ( addedMenu != null ) 
+				{
+					Log.log( Log.DEBUG, this, "manageBufferModeChng: removing the menu" );
+					menuBar.remove( addedMenu );
+					menuBar.repaint();
+					addedMenu = null;
+				}
+			}
+		} // if-else a supported mode
+	
+	} // manageBufferModeChng
+	
+	/** Create a menu for the given plugin class (either 1 item or a submenu).
+	* Mostly copied from EditPlugin.createMenuItems. jEdit finds all information
+	* needed to create the menu in the properties that the plugin has set.	
+	* @param pluginClassName full plugin class name such as <code>uk.co.antroy.latextools.LaTeXPlugin</code>
+	*		 To find it out run Macros->Properties->jEdit properties and look 
+	*		 for the name of your plugin - there shall be a line
+	*		 <code>plugin.{plugin class name}.name={Your Plugin Name}</code>
+	*/
+	public final JMenuItem createMenuItems( String pluginClassName )
+	{
+		//if(this instanceof Broken) return null;
+		
+		String menuItemName = jEdit.getProperty("plugin." +
+		pluginClassName + ".menu-item");
+		if(menuItemName != null)
+			return GUIUtilities.loadMenuItem(menuItemName);
+		
+		String menuProperty = "plugin." + pluginClassName + ".menu";
+		String codeProperty = "plugin." + pluginClassName + ".menu.code";
+		if(jEdit.getProperty(menuProperty) != null
+			|| jEdit.getProperty(codeProperty) != null)
+		{
+			String pluginName = jEdit.getProperty("plugin." +
+			pluginClassName + ".name");
+			return new EnhancedMenu(menuProperty,pluginName);
+		}
+		
+		return null;
+	} // createMenuItems
+	
+	/** Handles a message sent on the EditBus - calls manageBufferModeChng. */
+	public void handleMessage(EBMessage message)
+	{				
+		
+		if ( message instanceof EditPaneUpdate )	// buffer switched
+		{	
+			Log.log(Log.DEBUG, this, "ModeMenuManager: received EditPaneU. bus message:" + message );
+			EditPaneUpdate paneMsg = (EditPaneUpdate)message;
+			
+			if ( paneMsg.getWhat().equals( EditPaneUpdate.BUFFER_CHANGED ) )
+			{
+				this.manageBufferModeChng();
+			}
+		}
+		else if ( waitFor1stBuff && (message instanceof BufferUpdate) ) // 1st buffer loaded
+		{
+			BufferUpdate buffMsg = (BufferUpdate)message;
+			// If loading of the buffer has been finished and it's the active 
+			// buff. check whether it's in MODE and if so show the menu
+			if ( buffMsg.getWhat().equals( BufferUpdate.LOADED ) &&
+				buffMsg.getBuffer().equals( theView.getBuffer() ) )
+			{
+				waitFor1stBuff = false;
+				this.manageBufferModeChng();
+			}
+		} // if-else message type
+		
+	} // handleMessage
+	
+	/** When startup scripts are run 'view' doesn't exist yet.*/
+	public class InitialRegistrator
+	implements org.gjt.sp.jedit.EBComponent
+	{
+	    ModeMenuManager theMMManager = null; 
+	    
+	    public InitialRegistrator()
+	    {
+	        EditBus.addToBus( this ); /// EditBus.removeFromBus( this );
+	    }
+	    
+	    public void handleMessage(EBMessage message)
+		{				
+			
+			if( message instanceof ViewUpdate )
+			{	
+				Log.log(Log.DEBUG, this, "**** Registrator: received EditPaneU. bus message:" + message );
+				ViewUpdate viewMsg = (ViewUpdate)message;
+				
+				if ( viewMsg.getWhat().equals( ViewUpdate.CREATED ) )
+				{
+				    Log.log(Log.DEBUG, this, "**** Registrator: view created" );
+				    // Create a new mode menu manager and disconnect self from the bus
+				    theMMManager = new ModeMenuManager( viewMsg.getView() ); 
+				    EditBus.removeFromBus( this );
+				}
+
+			} // InitialRegistrator.handleMessage
+			
+		} // handleMessage
+	    
+	    
+        public ModeMenuManager getManager() {
+            return theMMManager;
+        }
+        
+        /** Remove the manager from the bus.*/
+        public void removeManager() {
+            if( theMMManager == null ) { return; }
+            EditBus.removeFromBus( this.theMMManager );
+            this.theMMManager = null;
+        }
+	}
+	
+} // ModeMenuManager
+
+
+
+
+//*****************************************************************************
+//*****************************************************************************
+//*****************************************************************************
+// You can use _myModeMenuManagerXQ953.remove() later on to remove the
+// mode menu manager so that it will stop doing its job.
+ModeMenuManager.InitialRegistrator _myModeMenuManagerXQ953 = 
+	new ModeMenuManager.InitialRegistrator();

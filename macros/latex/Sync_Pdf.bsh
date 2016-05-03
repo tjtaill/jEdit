@@ -1,0 +1,9 @@
+source (MiscUtilities.constructPath(dirname(scriptPath), "Select_Between.bsh"));
+
+if (textArea.getSelectionCount() == 0) {
+  selectBetween("{", "}");    
+}
+
+wm.showDockableWindow("icepdf-viewer");
+pdfViewer = wm.getDockableWindow("icepdf-viewer");
+pdfViewer.searchSelected(textArea);

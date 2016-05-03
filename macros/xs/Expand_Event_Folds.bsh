@@ -1,0 +1,17 @@
+// go to begining of document
+textArea.goToBufferStart(false);
+
+// collapse all folds
+textArea.getDisplayManager().expandFolds(1);
+
+SearchAndReplace.setSearchString("com.+?Event");
+SearchAndReplace.setAutoWrapAround(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+
+while ( SearchAndReplace.find(view) ) {
+	// expand current fold
+	textArea.expandFold(false);		
+}
+
+textArea.goToBufferStart(false);

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE MODE SYSTEM "xmode.dtd">
+
+<MODE>
+	<PROPS>
+		<PROPERTY NAME="lineComment" VALUE="#" />		
+	</PROPS>
+	<RULES IGNORE_CASE="FALSE">
+	<SPAN TYPE="LITERAL1" NO_LINE_BREAK="TRUE">
+			<BEGIN>"</BEGIN>
+			<END>"</END>
+	</SPAN>
+	<EOL_SPAN TYPE="COMMENT1">#</EOL_SPAN>
+	  <KEYWORDS>
+	    <KEYWORD1>Author</KEYWORD1>
+	    <KEYWORD1>Title</KEYWORD1>
+	    <KEYWORD1>DependantEVs</KEYWORD1>
+	    <KEYWORD1>InterServerDependency</KEYWORD1>
+	    <KEYWORD1>SchemaChange</KEYWORD1>
+	    <KEYWORD1>OciSchemaChange</KEYWORD1>
+	    <KEYWORD1>ConfigSchemaChange</KEYWORD1>
+	    <KEYWORD1>AccountingChange</KEYWORD1>
+	    <KEYWORD1>LocalizationChange</KEYWORD1>
+	    <KEYWORD1>HelpChange</KEYWORD1>
+	    <KEYWORD1>OSSDTDChange</KEYWORD1>
+	    <KEYWORD1>CAPChange</KEYWORD1>
+	    <KEYWORD1>SIPChange</KEYWORD1>
+	    <KEYWORD1>MGCPChange</KEYWORD1>
+	    <KEYWORD1>MIBUpdate</KEYWORD1>
+	    <KEYWORD1>BinaryUpdate</KEYWORD1>
+	    <KEYWORD1>RestartRequired</KEYWORD1>
+	    <KEYWORD1>SnmpRestartRequired</KEYWORD1>
+	    <KEYWORD1>ExcludeList</KEYWORD1>
+	    <KEYWORD1>MinimalToolVersion</KEYWORD1>
+	    
+	    <KEYWORD3>LocalizationDetails</KEYWORD3>
+	    <KEYWORD3>FixedEVs</KEYWORD3>
+	    <KEYWORD3>Disposition</KEYWORD3>
+	    <KEYWORD3>TestInstructions</KEYWORD3>
+
+	    <KEYWORD4>InternalDisposition</KEYWORD4>
+	    <KEYWORD4>InternalTestInstructions</KEYWORD4>
+	    
+	    <KEYWORD3>PostInstallMessage</KEYWORD3>
+	  </KEYWORDS>
+	</RULES>
+</MODE>

@@ -1,0 +1,13 @@
+if (textArea.getSelectionCount() < 1) {
+	textArea.selectLine();	
+} 
+
+Selection[] selections = textArea.getSelection();
+for(int i = 0; i < selections.length; i++){
+			int startLine = selections[i].getStartLine();
+			int endLine = selections[i].getEndLine();
+			
+			for (int j = startLine; j < endLine; j++) {
+				textArea.getDisplayManager().expandFold(j, false);	
+			}
+}

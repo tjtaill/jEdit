@@ -1,0 +1,5 @@
+console.ConsolePlugin.compile(view,buffer);
+waitForConsole(view);
+wm.showDockableWindow("batik-svg-viewer");
+imageViewer = wm.getDockableWindow("batik-svg-viewer");
+imageViewer.openSvg(editPane);

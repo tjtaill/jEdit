@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE MODE SYSTEM "xmode.dtd">
+<MODE>
+    <RULES IGNORE_CASE="FALSE">
+		<SEQ AT_WORD_START="TRUE" TYPE="INVALID">Exception</SEQ>
+		<SEQ AT_WORD_START="TRUE" TYPE="INVALID">Warn</SEQ>
+		<SEQ AT_WORD_START="TRUE" TYPE="INVALID">Notice</SEQ>
+		<SEQ AT_WORD_START="TRUE" TYPE="INVALID">c:ErrorResponse</SEQ>
+		<SPAN_REGEXP HASH_CHAR="&quot;" TYPE="FUNCTION">
+		  <BEGIN>\"(?:Authentication|Verify|c:Success|Session|User|Group|System|Enterprise|ServiceProvider)</BEGIN>
+		  <END REGEXP="TRUE">(?:Request|Response).*?\"</END>
+		</SPAN_REGEXP>    
+    </RULES>
+</MODE>

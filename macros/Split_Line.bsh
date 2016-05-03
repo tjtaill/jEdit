@@ -1,0 +1,7 @@
+import org.apache.commons.lang.WordUtils;
+
+text = buffer.getText();
+newBuffer = jEdit.newFile(view);
+newBufferContent = WordUtils.wrap(text, 80);
+newBuffer.insert(0, newBufferContent);
+

@@ -1,0 +1,11 @@
+import org.apache.commons.lang.ArrayUtils;
+
+states = new String[]{"TODO", "DONE"};
+textArea.selectWord();
+if ( textArea.getSelectionCount() == 1 ) {
+  word = textArea.getSelectedText();
+  int index = ArrayUtils.indexOf(states, word);
+  if (index > -1 ) {
+    textArea.setSelectedText( states[(index + 1) % states.length ] );  
+  }
+}

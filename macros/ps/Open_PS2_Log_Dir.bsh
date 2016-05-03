@@ -1,0 +1,1 @@
+GUIUtilities.showVFSFileDialog(view,"sftp://bwadmin@ps2:22/var/broadworks/logs/provisioning/",VFSBrowser.BROWSER_DIALOG,true);

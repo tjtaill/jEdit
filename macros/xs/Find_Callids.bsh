@@ -1,0 +1,25 @@
+import java.util.regex.*;
+
+
+
+if (textArea.getSelectionCount() == 0) {
+	textArea.selectLine();	
+}
+
+if (textArea.getSelectionCount() > 0)
+{
+  pattern = Pattern.compile("^Call-ID:\\s*(\\S+)");
+  
+  selected = textArea.getSelectedText();
+  matcher = pattern.matcher( selected );
+  
+  if ( matcher.find() ) {
+    search = "Call-ID:\\s*" + matcher.group(1) + ".*$";
+    SearchAndReplace.setSearchString(search);
+    SearchAndReplace.setAutoWrapAround(true);
+    SearchAndReplace.setIgnoreCase(false);
+    SearchAndReplace.setRegexp(true);
+    SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+    SearchAndReplace.hyperSearch(view);
+  }
+}

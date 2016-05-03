@@ -1,0 +1,49 @@
+import java.util.regex.*;
+
+externalIdsInput = Macros.input(view, "External ID(S):");
+
+externalIds = new HashSet();
+callHalfs = new HashSet();
+for ( externalId : externalIdsInput.split(" ") ) {
+  externalIds.add( externalId );  
+}
+
+CALL_HALF_REGEX = "\\| callhalf-((?:\\d|:)+)\\s*$";
+callHalfPattern = Pattern.compile(CALL_HALF_REGEX);
+
+EXTERNAL_ID_REGEX = "\\| callhalf-((?:\\d|:)+) \\| ((?:\\w|:)+)\\s*$";
+externalIdPattern = Pattern.compile(EXTERNAL_ID_REGEX);
+
+
+filter = true;
+
+newBufferContent = new StringBuilder();
+
+for (lineNumber = 0; lineNumber < buffer.getLineCount(); lineNumber++) {
+  line = buffer.getLineText(lineNumber);
+  externalIdMatcher = externalIdPattern.matcher(line);
+  callHalfMatcher = callHalfPattern.matcher(line);
+  if ( externalIdMatcher.find() ) {
+    externalId = externalIdMatcher.group(2);  
+    filter = externalIds.contains( externalId ) ? false : true;
+    if ( ! filter ) {
+      callHalfs.add( externalIdMatcher.group(1) );
+    }
+  }
+  
+  if ( callHalfMatcher.find() ) {
+    callHalf = callHalfMatcher.group(1);
+    filter = callHalfs.contains( callHalf ) ? false : true;
+  }
+  
+  if ( filter ) {
+    continue;
+  } else {
+    newBufferContent.append(line);
+    newBufferContent.append('\n');
+  }  
+}
+
+newBuffer = jEdit.newFile(view);
+newBuffer.insert(0, newBufferContent.toString());
+newBuffer.setMode( "xslog" );

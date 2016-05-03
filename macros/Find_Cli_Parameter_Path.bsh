@@ -1,0 +1,34 @@
+import saxonadapter.SaxonAdapter;
+
+source (MiscUtilities.constructPath(dirname(scriptPath), "Select_Between.bsh"));
+
+if (textArea.getSelectionCount() == 0) {
+  selectBetween(">", "<");    
+}
+
+if (textArea.getSelectionCount() > 0) {
+	paramName = textArea.getSelectedText();
+	xquery = "for $node in //parameter/name[text() = '" + paramName + "'] return string-join($node/ancestor::context/name/text(), \"/\")";
+	saxonAdapter = new SaxonAdapter();
+	saxonAdapter.loadContextFromFile(buffer.getPath());
+	result = saxonAdapter.evaluateFromString(xquery);
+	
+	resultNoDuplicates = new HashSet();
+	for ( r : result.split("\n") ) {
+		resultNoDuplicates.add( r );
+	}
+	
+	sb = new StringBuilder();
+	for ( r : resultNoDuplicates ) {
+		sb.append( r );
+		sb.append( '\n' );
+	}
+	
+	Registers.setRegister('$', sb.toString() );
+	
+	if ( resultNoDuplicates.size() > 1 ) {
+		newBuffer = jEdit.newFile(view);
+		Registers.paste(textArea, '$', false);
+	}
+	
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE serverType SYSTEM "sqlServerType.dtd">
+
+<serverType name="sqlite">
+
+  <driverClass>org.sqlite.JDBC</driverClass>
+
+  <vfs>
+  	<driverClass>org.sqlite.JDBC</driverClass>
+    <editMode>mysql</editMode>
+  </vfs>
+  
+  <!--
+  <defStatementDelimiterRegex>[\n\r]+;</defStatementDelimiterRegex>
+  -->
+  
+  <connection>    
+    <parameter name="dbName" default="comms.db"/>
+    <parameter name="user" default="ttaillefer"/>    
+    <string>jdbc:sqlite:C:/Users/{user}/AppData/Local/BroadSoft/UC-One/{user}@broadsoft.com/{dbName}</string>
+  </connection>
+  <statements>
+  	<statement purpose="selectObjectGroups">
+      select name from databases
+    </statement>
+    
+    <statement substMethod="text" purpose="selectTablesInGroup">
+      select name from {0}..sqlite_master where type='table'
+    </statement>
+  </statements>
+
+</serverType>

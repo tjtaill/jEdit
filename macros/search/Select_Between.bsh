@@ -1,0 +1,27 @@
+
+String getCharacterAt(position) {
+  return textArea.getText(position, 1);
+}
+
+void selectBetween(leftStopChar, rightStopChar) {
+  startPos = textArea.getCaretPosition();
+  leftPos = startPos;
+  rightPos = startPos;
+  offset = 0;
+  leftChar = getCharacterAt(startPos);
+  rightChar = leftChar;
+  while ( !leftChar.equals(leftStopChar) || !rightChar.equals(rightStopChar) ) {
+    if ( !leftChar.equals(leftStopChar) ) {
+      leftPos -= 1;
+      leftChar =  getCharacterAt(leftPos);
+    }
+    
+    if ( !rightChar.equals(rightStopChar) ) {
+      rightPos += 1;
+      rightChar = getCharacterAt(rightPos);
+    }
+    
+  }
+   
+  textArea.setSelection( new Selection.Range(leftPos + 1, rightPos) );   
+}

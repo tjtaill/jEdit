@@ -1,0 +1,5 @@
+Registers.copy(textArea,'$');
+Buffer newBuffer = jEdit.newFile(view);
+Registers.paste(textArea,'$',false);
+BufferPrinter1_4.print(view,newBuffer,false);
+jEdit._closeBuffer(view,newBuffer);

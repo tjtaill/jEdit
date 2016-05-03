@@ -1,0 +1,44 @@
+import java.util.regex.*;
+
+headlines = Macros.input(view, "Headlines:");
+
+filters = new HashSet();
+for ( headline : headlines.split(",") ) {
+  filters.add( headline );  
+}
+
+HEADLINE_REGEX = "\\|? (.*?)\\s+\\|";
+pattern = Pattern.compile(HEADLINE_REGEX);
+
+
+filter = true;
+headlineFound = false;
+
+newBufferContent = new StringBuilder();
+
+for (lineNumber = 0; lineNumber < buffer.getLineCount(); lineNumber++) {
+  line = buffer.getLineText(lineNumber);
+  matcher = pattern.matcher(line);
+  headlines = new HashSet();
+  while ( matcher.find() ) {
+    headlineFound = true;
+    headlines.add( matcher.group(1) );    
+  }
+  
+  if ( headlineFound ) {
+    headlines.retainAll(filters);
+    filter = headlines.isEmpty() ? true : false;
+    headlineFound = false;
+  }
+  
+  if ( filter ) {
+    continue;
+  } else {
+    newBufferContent.append(line);
+    newBufferContent.append('\n');
+  }  
+}
+
+newBuffer = jEdit.newFile(view);
+newBuffer.insert(0, newBufferContent.toString());
+newBuffer.setMode( "xslog" );

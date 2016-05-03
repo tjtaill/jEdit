@@ -1,0 +1,5 @@
+SearchAndReplace.setSearchString("^[A-Z]+? sip:");
+SearchAndReplace.setAutoWrapAround(true);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.find(view);

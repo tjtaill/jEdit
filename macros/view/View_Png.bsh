@@ -1,0 +1,20 @@
+valid = true;
+path = buffer.getPath();
+
+if ( path.endsWith("plant") ) {
+    valid = plantplugin.PlantPlugin.validatePlant(buffer);
+}
+
+if ( valid ) {
+  console.ConsolePlugin.run(view,buffer);
+  waitForConsole(view);
+  view.getDockableWindowManager().showDockableWindow("imageviewer");
+  imageViewer = view.getDockableWindowManager().getDockableWindow("imageviewer");
+  
+  index = path.lastIndexOf(".");
+  path = path.substring(0, index + 1) + "png";
+  try {
+    imageViewer.showImage(path, true);
+  } catch(ex) {
+  }
+}

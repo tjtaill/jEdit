@@ -1,0 +1,18 @@
+// go to begining of document
+textArea.goToBufferStart(false);
+
+// collapse all folds
+textArea.getDisplayManager().expandFolds(1);
+
+SearchAndReplace.setSearchString("| Sip |");
+SearchAndReplace.setAutoWrapAround(false);
+SearchAndReplace.setRegexp(false);
+SearchAndReplace.setReverseSearch(false);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+
+while ( SearchAndReplace.find(view) ) {
+	// expand current fold
+	textArea.expandFold(false);		
+}
+
+textArea.goToBufferStart(false);

@@ -1,0 +1,82 @@
+
+/*
+ * Full_Screen.bsh - a BeanShell macro script for the
+ * jEdit text editor - closes/reopens all dockable window
+ * containers
+ * Copyright (C) 2002 Carmine Lucarelli
+ * http://community.jedit.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the jEdit program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ */
+
+void open()
+{
+	if("true".equals(jEdit.getProperty("jEditFullScreen.Bottom")))
+	{
+		view.getDockableWindowManager().getBottomDockingArea().showMostRecent();
+		jEdit.unsetProperty("jEditFullScreen.Bottom");
+	}
+	if("true".equals(jEdit.getProperty("jEditFullScreen.Top")))
+	{
+		view.getDockableWindowManager().getTopDockingArea().showMostRecent();
+		jEdit.unsetProperty("jEditFullScreen.Top");
+	}
+	if("true".equals(jEdit.getProperty("jEditFullScreen.Left")))
+	{
+		view.getDockableWindowManager().getLeftDockingArea().showMostRecent();
+		jEdit.unsetProperty("jEditFullScreen.Left");
+	}
+	if("true".equals(jEdit.getProperty("jEditFullScreen.Right")))
+	{
+		view.getDockableWindowManager().getRightDockingArea().showMostRecent();
+		jEdit.unsetProperty("jEditFullScreen.Right");
+	}
+}
+
+void shut(PanelWindowContainer pwc)
+{
+	pwc.show(null);
+}
+
+// toggle the state of dockable areas
+
+bottom = view.getDockableWindowManager().getBottomDockingArea().getCurrent();
+if(bottom != null)
+	jEdit.setTemporaryProperty("jEditFullScreen.Bottom", "true");
+top = view.getDockableWindowManager().getTopDockingArea().getCurrent();
+if(top != null)
+	jEdit.setTemporaryProperty("jEditFullScreen.Top", "true");
+left = view.getDockableWindowManager().getLeftDockingArea().getCurrent();
+if(left != null)
+	jEdit.setTemporaryProperty("jEditFullScreen.Left", "true");
+right = view.getDockableWindowManager().getRightDockingArea().getCurrent();
+if(right != null)
+	jEdit.setTemporaryProperty("jEditFullScreen.Right", "true");
+
+if(bottom == null && top == null && left == null && right == null)
+	open();
+else
+{
+	shut(view.getDockableWindowManager().getBottomDockingArea());
+	shut(view.getDockableWindowManager().getLeftDockingArea());
+	shut(view.getDockableWindowManager().getTopDockingArea());
+	shut(view.getDockableWindowManager().getRightDockingArea());
+}
+
+textArea.scrollToCaret(false);
+textArea.requestFocus();
+
+

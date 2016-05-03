@@ -1,0 +1,51 @@
+
+/*
+* Explore Directory for ProjectViewer
+*
+* Version 1.0
+* Copyright (C) 2011 David Koenig
+*
+* This macro will bring up the default platform file manager if called on a
+* directory from the ProjectViewer plugin.
+*/
+ 
+ 
+import java.awt.*;
+import java.net.*;
+import java.io.*;
+import projectviewer.ProjectViewer;
+import projectviewer.vpt.VPTProject;
+import projectviewer.vpt.VPTNode;
+ 
+VPTProject prj=ProjectViewer.getActiveProject(view);
+ProjectViewer pv=ProjectViewer.getViewer(view);
+VPTNode node = pv.getSelectedNode();
+
+if ( node == null ) {
+	Log.log(Log.DEBUG, this, "Explore_Directory.bsh : no node is selected." );
+	return;
+}
+
+if ( node.isDirectory() ) {
+	java.awt.Desktop desktop = null;
+
+	if ( java.awt.Desktop.isDesktopSupported() ) {
+		desktop = java.awt.Desktop.getDesktop();
+
+		try {
+			String path = node.getNodePath();
+			File fp = new File(path);
+			desktop.open(fp);
+		} catch (Exception eio) {
+			Log.log(Log.ERROR, this, "Explore_Directory.bsh : Exception! " +eio );
+		}
+	} else {
+		Macros.error(view, "java.awt.Desktop is not supported on your system.\n" 
+						+ "Make sure you are using the latest Java runtime.\n"
+						+ "Visit http://java.sun.com to download the latest JRE.");
+	}
+} else {
+	Macros.error(view, "Please select a directory to explore.");
+}
+
+

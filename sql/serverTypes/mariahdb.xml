@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE serverType SYSTEM "sqlServerType.dtd">
+
+<serverType name="MariahDB">
+
+  <driverClass>org.mariadb.jdbc.Driver</driverClass>
+
+  <vfs>
+  	<driverClass>org.mariadb.jdbc.Driver</driverClass>
+    <editMode>mysql</editMode>
+  </vfs>
+
+  <connection>
+    <parameter name="host" default="10.9.55.42"/>
+    <parameter name="port" default="3306"/>
+    <parameter name="dbName" default="mysql"/>
+    <parameter name="extra" default="?useUnicode=true&amp;characterEncoding=koi8-r"/>
+    <parameter name="user" default="bwadmin"/>
+    <parameter name="password" default="bwAdmin!"/>
+    <string>jdbc:mariadb://{host}:{port}/{dbName}{extra}</string>
+  </connection>
+  <statements>
+    <statement purpose="selectObjectGroups">
+      SHOW DATABASES
+    </statement>
+    <statement substMethod="text" purpose="selectTablesInGroup">
+      SHOW TABLES FROM {0}
+    </statement>
+  </statements>
+
+</serverType>

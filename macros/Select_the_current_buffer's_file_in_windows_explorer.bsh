@@ -1,0 +1,66 @@
+
+/*
+ * Show_in_WindowsExplorer.bsh - a BeanShell macro script for the jEdit text editor - 
+ * Opens Windows explorer and selects the current buffer's file there.
+ *
+ * Copyright (C) 2005-2008 Robert Schwenn
+ * Robert@Schwenn-R.de
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the jEdit program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * $Id: Show_in_WindowsExplorer.bsh,v 1.2 2008/02/28 Schwenn $
+ *
+ *
+ * Dependencies: - OS = Windows ;-)
+ *
+ */
+
+  
+  // save current buffer
+  if(buffer.isNewFile()) {
+    Macros.message(view, "The Bufer first has to be saved as a file!");
+  } else {
+    if (buffer.isDirty()) {
+      buffer.save(view, null);
+    }
+     
+    // get command processor
+    os = System.getProperty("os.name");
+    if(os.indexOf("Windows 9") == -1 && os.indexOf("Windows M") == -1) {
+      comspec = "cmd";
+    } else {
+      comspec = "command";
+    }
+    
+    command = comspec + " /c start explorer.exe /e,/select,\"" + buffer.getPath() + "\"";
+    //Macros.message(view, command);
+    Runtime.getRuntime().exec(command);
+  }
+
+/*
+
+Macro index data (in DocBook format)
+
+  <listitem>
+    <para><filename>Show_in_WindowsExplorer.bsh</filename></para>
+    <abstract><para>
+      Opens Windows explorer and selects the current buffer's file there.
+    </para></abstract>
+  </listitem>
+
+*/
+
+// end Show_in_WindowsExplorer.bsh
+

@@ -1,0 +1,5 @@
+gatchan.highlight.HighlightPlugin.disableHighlights();
+jEdit.setProperty("gatchan.highlight.caretHighlight", "false");
+jEdit.setProperty("gatchan.highlight.selectionHighlight", "false");
+jEdit.propertiesChanged();
+gatchan.highlight.HighlightPlugin.removeAllHighlights();

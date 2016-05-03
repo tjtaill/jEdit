@@ -1,0 +1,28 @@
+  /* 
+  Returns the current directory of the 
+  current System shell of the current Console. 
+  */ 
+  getCurrentSystemDir() { 
+    // To access non-public members setAccessibility(true); 
+    // Obtain the console instance 
+    consoleDockable = view.getDockableWindowManager().getDockable("console"); 
+    if (consoleDockable == null) {
+    // Add dockable because it wasn't found => The dockable will popup.
+    //Macros.message(view, "Add dockable because it wasn't found");
+    view.getDockableWindowManager().addDockableWindow("console");
+    consoleDockable = view.getDockableWindowManager().getDockable("console");
+    
+    // Close Console's dockable, that should have been opened.
+    jEdit.getAction("console-toggle").invoke(view);
+    }
+    
+    sysShell = console.Shell.getShell("System"); 
+    if (sysShell == null) {
+      currentDirectory = java.lang.System.getProperty("user.dir");
+    } else {
+      currentDirectory = sysShell.getVariableValue(view, "pwd");
+    }      
+    return currentDirectory + File.separator; 
+  } 
+    
+ 

@@ -1,0 +1,627 @@
+<?xml version="1.0"?>
+<!DOCTYPE MODE SYSTEM "xmode.dtd">
+<MODE>
+	<PROPS>
+		<PROPERTY NAME="lineComment" VALUE="'" />
+		<PROPERTY NAME="startComment" VALUE="/'" />
+		<PROPERTY NAME="endComment" VALUE="'/" />
+	</PROPS>
+	
+	<RULES IGNORE_CASE="FALSE">
+		<SPAN TYPE="LITERAL1" NO_LINE_BREAK="TRUE">
+			<BEGIN>"</BEGIN>
+			<END>"</END>
+		</SPAN>
+		<SPAN TYPE="COMMENT1">
+			<BEGIN>/'</BEGIN>
+			<END>'/</END>
+		</SPAN>
+		<EOL_SPAN TYPE="COMMENT1">'</EOL_SPAN>
+	<KEYWORDS>	
+		<KEYWORD3>abstract</KEYWORD3>
+		<KEYWORD3>actor</KEYWORD3>
+		<KEYWORD3>agent</KEYWORD3>
+		<KEYWORD3>artifact</KEYWORD3>
+		<KEYWORD3>boundary</KEYWORD3>
+		<KEYWORD3>card</KEYWORD3>
+		<KEYWORD3>class</KEYWORD3>
+		<KEYWORD3>cloud</KEYWORD3>
+		<KEYWORD3>component</KEYWORD3>
+		<KEYWORD3>control</KEYWORD3>
+		<KEYWORD3>database</KEYWORD3>
+		<KEYWORD3>entity</KEYWORD3>
+		<KEYWORD3>enum</KEYWORD3>
+		<KEYWORD3>folder</KEYWORD3>
+		<KEYWORD3>frame</KEYWORD3>
+		<KEYWORD3>interface</KEYWORD3>
+		<KEYWORD3>node</KEYWORD3>
+		<KEYWORD3>object</KEYWORD3>
+		<KEYWORD3>participant</KEYWORD3>
+		<KEYWORD3>rect</KEYWORD3>
+		<KEYWORD3>state</KEYWORD3>
+		<KEYWORD3>storage</KEYWORD3>
+		<KEYWORD3>usecase</KEYWORD3>
+
+		<KEYWORD1>@enduml</KEYWORD1>
+		<KEYWORD1>@startuml</KEYWORD1>
+		<KEYWORD1>activate</KEYWORD1>
+		<KEYWORD1>again</KEYWORD1>
+		<KEYWORD1>also</KEYWORD1>
+		<KEYWORD1>alt</KEYWORD1>
+		<KEYWORD1>as</KEYWORD1>
+		<KEYWORD1>autonumber</KEYWORD1>
+		<KEYWORD1>bottom</KEYWORD1>
+		<KEYWORD1>box</KEYWORD1>
+		<KEYWORD1>break</KEYWORD1>
+		<KEYWORD1>center</KEYWORD1>
+		<KEYWORD1>create</KEYWORD1>
+		<KEYWORD1>critical</KEYWORD1>
+		<KEYWORD1>deactivate</KEYWORD1>
+		<KEYWORD1>destroy</KEYWORD1>
+		<KEYWORD1>down</KEYWORD1>
+		<KEYWORD1>else</KEYWORD1>
+		<KEYWORD1>elseif</KEYWORD1>
+		<KEYWORD1>end</KEYWORD1>
+		<KEYWORD1>endif</KEYWORD1>
+		<KEYWORD1>endwhile</KEYWORD1>
+		<KEYWORD1>footbox</KEYWORD1>
+		<KEYWORD1>footer</KEYWORD1>
+		<KEYWORD1>fork</KEYWORD1>
+		<KEYWORD1>group</KEYWORD1>
+		<KEYWORD1>header</KEYWORD1>
+		<KEYWORD1>hide</KEYWORD1>
+		<KEYWORD1>if</KEYWORD1>
+		<KEYWORD1>is</KEYWORD1>
+		<KEYWORD1>kill</KEYWORD1>
+		<KEYWORD1>left</KEYWORD1>
+		<KEYWORD1>link</KEYWORD1>
+		<KEYWORD1>loop</KEYWORD1>
+		<KEYWORD1>namespace</KEYWORD1>
+		<KEYWORD1>newpage</KEYWORD1>
+		<KEYWORD1>note</KEYWORD1>
+		<KEYWORD1>of</KEYWORD1>
+		<KEYWORD1>on</KEYWORD1>
+		<KEYWORD1>opt</KEYWORD1>
+		<KEYWORD1>over</KEYWORD1>
+		<KEYWORD1>package</KEYWORD1>
+		<KEYWORD1>page</KEYWORD1>
+		<KEYWORD1>par</KEYWORD1>
+		<KEYWORD1>partition</KEYWORD1>
+		<KEYWORD1>ref</KEYWORD1>
+		<KEYWORD1>repeat</KEYWORD1>
+		<KEYWORD1>return</KEYWORD1>
+		<KEYWORD1>right</KEYWORD1>
+		<KEYWORD1>rotate</KEYWORD1>
+		<KEYWORD1>show</KEYWORD1>
+		<KEYWORD1>skin</KEYWORD1>
+		<KEYWORD1>skinparam</KEYWORD1>
+		<KEYWORD1>start</KEYWORD1>
+		<KEYWORD1>stop</KEYWORD1>
+		<KEYWORD1>title</KEYWORD1>
+		<KEYWORD1>top</KEYWORD1>
+		<KEYWORD1>top to bottom direction</KEYWORD1>
+		<KEYWORD1>up</KEYWORD1>
+		<KEYWORD1>while</KEYWORD1>
+		<KEYWORD1>note</KEYWORD1>
+		<KEYWORD1>over</KEYWORD1>
+		<KEYWORD1>left</KEYWORD1>
+		<KEYWORD1>right</KEYWORD1>
+		<KEYWORD1>bottom</KEYWORD1>
+		<KEYWORD1>top</KEYWORD1>
+		<KEYWORD1>of</KEYWORD1>
+		<KEYWORD1>center</KEYWORD1>
+		<KEYWORD1>header</KEYWORD1>
+		<KEYWORD1>footer</KEYWORD1>
+	</KEYWORDS>
+<!--
+
+;preprocessor
+;6
+!define
+!endif
+!ifdef
+!ifndef
+!include
+!undef
+
+;skinparameter
+;342
+ActivityArrowColor
+ActivityArrowFontColor
+ActivityArrowFontName
+ActivityArrowFontSize
+ActivityArrowFontStyle
+ActivityBackgroundColor
+ActivityBarColor
+ActivityBorderColor
+ActivityDiamondFontColor
+ActivityDiamondFontName
+ActivityDiamondFontSize
+ActivityDiamondFontStyle
+ActivityEndColor
+ActivityFontColor
+ActivityFontName
+ActivityFontSize
+ActivityFontStyle
+ActivityStartColor
+ActorBackgroundColor
+ActorBorderColor
+ActorFontColor
+ActorFontName
+ActorFontSize
+ActorFontStyle
+ActorStereotypeFontColor
+ActorStereotypeFontName
+ActorStereotypeFontSize
+ActorStereotypeFontStyle
+AgentBackgroundColor
+AgentBorderColor
+AgentFontColor
+AgentFontName
+AgentFontSize
+AgentFontStyle
+AgentStereotypeFontColor
+AgentStereotypeFontName
+AgentStereotypeFontSize
+AgentStereotypeFontStyle
+ArtifactBackgroundColor
+ArtifactBorderColor
+ArtifactFontColor
+ArtifactFontName
+ArtifactFontSize
+ArtifactFontStyle
+ArtifactStereotypeFontColor
+ArtifactStereotypeFontName
+ArtifactStereotypeFontSize
+ArtifactStereotypeFontStyle
+BackgroundColor
+BoundaryBackgroundColor
+BoundaryBorderColor
+BoundaryFontColor
+BoundaryFontName
+BoundaryFontSize
+BoundaryFontStyle
+BoundaryStereotypeFontColor
+BoundaryStereotypeFontName
+BoundaryStereotypeFontSize
+BoundaryStereotypeFontStyle
+CircledCharacterFontColor
+CircledCharacterFontName
+CircledCharacterFontSize
+CircledCharacterFontStyle
+CircledCharacterRadius
+ClassArrowColor
+ClassAttributeFontColor
+ClassAttributeFontName
+ClassAttributeFontSize
+ClassAttributeFontStyle
+ClassAttributeIconSize
+ClassBackgroundColor
+ClassBorderColor
+ClassBorderThickness
+ClassFontColor
+ClassFontName
+ClassFontSize
+ClassFontStyle
+ClassStereotypeFontColor
+ClassStereotypeFontName
+ClassStereotypeFontSize
+ClassStereotypeFontStyle
+CloudBackgroundColor
+CloudBorderColor
+CloudFontColor
+CloudFontName
+CloudFontSize
+CloudFontStyle
+CloudStereotypeFontColor
+CloudStereotypeFontName
+CloudStereotypeFontSize
+CloudStereotypeFontStyle
+ComponentBackgroundColor
+ComponentBorderColor
+ComponentFontColor
+ComponentFontName
+ComponentFontSize
+ComponentFontStyle
+ComponentStereotypeFontColor
+ComponentStereotypeFontName
+ComponentStereotypeFontSize
+ComponentStereotypeFontStyle
+ControlBackgroundColor
+ControlBorderColor
+ControlFontColor
+ControlFontName
+ControlFontSize
+ControlFontStyle
+ControlStereotypeFontColor
+ControlStereotypeFontName
+ControlStereotypeFontSize
+ControlStereotypeFontStyle
+DatabaseBackgroundColor
+DatabaseBorderColor
+DatabaseFontColor
+DatabaseFontName
+DatabaseFontSize
+DatabaseFontStyle
+DatabaseStereotypeFontColor
+DatabaseStereotypeFontName
+DatabaseStereotypeFontSize
+DatabaseStereotypeFontStyle
+DefaultFontColor
+DefaultFontName
+DefaultFontSize
+DefaultFontStyle
+EntityBackgroundColor
+EntityBorderColor
+EntityFontColor
+EntityFontName
+EntityFontSize
+EntityFontStyle
+EntityStereotypeFontColor
+EntityStereotypeFontName
+EntityStereotypeFontSize
+EntityStereotypeFontStyle
+FolderBackgroundColor
+FolderBorderColor
+FolderFontColor
+FolderFontName
+FolderFontSize
+FolderFontStyle
+FolderStereotypeFontColor
+FolderStereotypeFontName
+FolderStereotypeFontSize
+FolderStereotypeFontStyle
+FooterFontColor
+FooterFontName
+FooterFontSize
+FooterFontStyle
+FrameBackgroundColor
+FrameBorderColor
+FrameFontColor
+FrameFontName
+FrameFontSize
+FrameFontStyle
+FrameStereotypeFontColor
+FrameStereotypeFontName
+FrameStereotypeFontSize
+FrameStereotypeFontStyle
+GenericArrowFontColor
+GenericArrowFontName
+GenericArrowFontSize
+GenericArrowFontStyle
+HeaderFontColor
+HeaderFontName
+HeaderFontSize
+HeaderFontStyle
+HyperlinkColor
+IconPackageBackgroundColor
+IconPackageColor
+IconPrivateBackgroundColor
+IconPrivateColor
+IconProtectedBackgroundColor
+IconProtectedColor
+IconPublicBackgroundColor
+IconPublicColor
+InterfaceBackgroundColor
+InterfaceBorderColor
+InterfaceFontColor
+InterfaceFontName
+InterfaceFontSize
+InterfaceFontStyle
+InterfaceStereotypeFontColor
+InterfaceStereotypeFontName
+InterfaceStereotypeFontSize
+InterfaceStereotypeFontStyle
+LegendBackgroundColor
+LegendBorderColor
+LegendFontColor
+LegendFontName
+LegendFontSize
+LegendFontStyle
+Monochrome
+NodeBackgroundColor
+NodeBorderColor
+NodeFontColor
+NodeFontName
+NodeFontSize
+NodeFontStyle
+NodeStereotypeFontColor
+NodeStereotypeFontName
+NodeStereotypeFontSize
+NodeStereotypeFontStyle
+NoteBackgroundColor
+NoteBorderColor
+NoteBorderThickness
+NoteFontColor
+NoteFontName
+NoteFontSize
+NoteFontStyle
+ObjectArrowColor
+ObjectAttributeFontColor
+ObjectAttributeFontName
+ObjectAttributeFontSize
+ObjectAttributeFontStyle
+ObjectBackgroundColor
+ObjectBorderColor
+ObjectBorderThickness
+ObjectFontColor
+ObjectFontName
+ObjectFontSize
+ObjectFontStyle
+ObjectStereotypeFontColor
+ObjectStereotypeFontName
+ObjectStereotypeFontSize
+ObjectStereotypeFontStyle
+PackageBackgroundColor
+PackageBorderColor
+PackageBorderThickness
+PackageFontColor
+PackageFontName
+PackageFontSize
+PackageFontStyle
+ParticipantBackgroundColor
+ParticipantBorderColor
+ParticipantFontColor
+ParticipantFontName
+ParticipantFontSize
+ParticipantFontStyle
+PartitionBackgroundColor
+PartitionBorderColor
+RectangleBackgroundColor
+RectangleBorderColor
+RectangleFontColor
+RectangleFontName
+RectangleFontSize
+RectangleFontStyle
+RectangleStereotypeFontColor
+RectangleStereotypeFontName
+RectangleStereotypeFontSize
+RectangleStereotypeFontStyle
+SequenceActorBorderThickness
+SequenceArrowColor
+SequenceArrowFontColor
+SequenceArrowFontName
+SequenceArrowFontSize
+SequenceArrowFontStyle
+SequenceBoxBackgroundColor
+SequenceBoxBorderColor
+SequenceBoxFontColor
+SequenceBoxFontName
+SequenceBoxFontSize
+SequenceBoxFontStyle
+SequenceDelayFontColor
+SequenceDelayFontName
+SequenceDelayFontSize
+SequenceDelayFontStyle
+SequenceDividerBackgroundColor
+SequenceDividerBorderThickness
+SequenceDividerFontColor
+SequenceDividerFontName
+SequenceDividerFontSize
+SequenceDividerFontStyle
+SequenceGroupBackgroundColor
+SequenceGroupBorderColor
+SequenceGroupBorderThickness
+SequenceGroupFontColor
+SequenceGroupFontName
+SequenceGroupFontSize
+SequenceGroupFontStyle
+SequenceGroupHeaderFontColor
+SequenceGroupHeaderFontName
+SequenceGroupHeaderFontSize
+SequenceGroupHeaderFontStyle
+SequenceLifeLineBackgroundColor
+SequenceLifeLineBorderColor
+SequenceLifeLineBorderThickness
+SequenceParticipantBorderThickness
+SequenceReferenceBackgroundColor
+SequenceReferenceBorderColor
+SequenceReferenceBorderThickness
+SequenceReferenceFontColor
+SequenceReferenceFontName
+SequenceReferenceFontSize
+SequenceReferenceFontStyle
+SequenceReferenceHeaderBackgroundColor
+SequenceTitleFontColor
+SequenceTitleFontName
+SequenceTitleFontSize
+SequenceTitleFontStyle
+StateArrowColor
+StateAttributeFontColor
+StateAttributeFontName
+StateAttributeFontSize
+StateAttributeFontStyle
+StateBackgroundColor
+StateBorderColor
+StateEndColor
+StateFontColor
+StateFontName
+StateFontSize
+StateFontStyle
+StateStartColor
+StereotypeABackgroundColor
+StereotypeCBackgroundColor
+StereotypeEBackgroundColor
+StereotypeIBackgroundColor
+StorageBackgroundColor
+StorageBorderColor
+StorageFontColor
+StorageFontName
+StorageFontSize
+StorageFontStyle
+StorageStereotypeFontColor
+StorageStereotypeFontName
+StorageStereotypeFontSize
+StorageStereotypeFontStyle
+TitleFontColor
+TitleFontName
+TitleFontSize
+TitleFontStyle
+UsecaseArrowColor
+UsecaseBackgroundColor
+UsecaseBorderColor
+UsecaseFontColor
+UsecaseFontName
+UsecaseFontSize
+UsecaseFontStyle
+UsecaseStereotypeFontColor
+UsecaseStereotypeFontName
+UsecaseStereotypeFontSize
+UsecaseStereotypeFontStyle
+
+;color
+;147
+AliceBlue
+AntiqueWhite
+Aqua
+Aquamarine
+Azure
+Beige
+Bisque
+Black
+BlanchedAlmond
+Blue
+BlueViolet
+Brown
+BurlyWood
+CadetBlue
+Chartreuse
+Chocolate
+Coral
+CornflowerBlue
+Cornsilk
+Crimson
+Cyan
+DarkBlue
+DarkCyan
+DarkGoldenRod
+DarkGray
+DarkGreen
+DarkGrey
+DarkKhaki
+DarkMagenta
+DarkOliveGreen
+DarkOrchid
+DarkRed
+DarkSalmon
+DarkSeaGreen
+DarkSlateBlue
+DarkSlateGray
+DarkSlateGrey
+DarkTurquoise
+DarkViolet
+Darkorange
+DeepPink
+DeepSkyBlue
+DimGray
+DimGrey
+DodgerBlue
+FireBrick
+FloralWhite
+ForestGreen
+Fuchsia
+Gainsboro
+GhostWhite
+Gold
+GoldenRod
+Gray
+Green
+GreenYellow
+Grey
+HoneyDew
+HotPink
+IndianRed
+Indigo
+Ivory
+Khaki
+Lavender
+LavenderBlush
+LawnGreen
+LemonChiffon
+LightBlue
+LightCoral
+LightCyan
+LightGoldenRodYellow
+LightGray
+LightGreen
+LightGrey
+LightPink
+LightSalmon
+LightSeaGreen
+LightSkyBlue
+LightSlateGray
+LightSlateGrey
+LightSteelBlue
+LightYellow
+Lime
+LimeGreen
+Linen
+Magenta
+Maroon
+MediumAquaMarine
+MediumBlue
+MediumOrchid
+MediumPurple
+MediumSeaGreen
+MediumSlateBlue
+MediumSpringGreen
+MediumTurquoise
+MediumVioletRed
+MidnightBlue
+MintCream
+MistyRose
+Moccasin
+NavajoWhite
+Navy
+OldLace
+Olive
+OliveDrab
+Orange
+OrangeRed
+Orchid
+PaleGoldenRod
+PaleGreen
+PaleTurquoise
+PaleVioletRed
+PapayaWhip
+PeachPuff
+Peru
+Pink
+Plum
+PowderBlue
+Purple
+Red
+RosyBrown
+RoyalBlue
+SaddleBrown
+Salmon
+SandyBrown
+SeaGreen
+SeaShell
+Sienna
+Silver
+SkyBlue
+SlateBlue
+SlateGray
+SlateGrey
+Snow
+SpringGreen
+SteelBlue
+Tan
+Teal
+Thistle
+Tomato
+Turquoise
+Violet
+Wheat
+White
+WhiteSmoke
+Yellow
+YellowGreen
+
+;EOF
+
+	
+	-->
+	</RULES>
+</MODE>

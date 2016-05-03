@@ -1,0 +1,6 @@
+jEdit.setProperty("gatchan.highlight.caretHighlight", "true");
+jEdit.setProperty("gatchan.highlight.selectionHighlight", "true");
+jEdit.propertiesChanged();
+gatchan.highlight.HighlightPlugin.enableHighlights();
+gatchan.highlight.HighlightPlugin.highlightCurrentSearch();
+gatchan.highlight.HighlightPlugin.highlightHyperSearchResult(view);

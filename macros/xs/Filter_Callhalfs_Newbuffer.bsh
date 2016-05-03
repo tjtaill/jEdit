@@ -1,0 +1,36 @@
+import java.util.regex.*;
+
+callHalfsInput = Macros.input(view, "Call Half Sessions:");
+
+callHalfs = new HashSet();
+for ( callHalf : callHalfsInput.split(" ") ) {
+  callHalfs.add( callHalf );  
+}
+
+CALL_HALF_REGEX = "\\| callhalf-(\\d+)";
+pattern = Pattern.compile(CALL_HALF_REGEX);
+
+
+filter = true;
+
+newBufferContent = new StringBuilder();
+
+for (lineNumber = 0; lineNumber < buffer.getLineCount(); lineNumber++) {
+  line = buffer.getLineText(lineNumber);
+  matcher = pattern.matcher(line);
+  if ( matcher.find() ) {
+    callHalf = matcher.group(1);
+    filter = callHalfs.contains( callHalf ) ? false : true;
+  }
+  
+  if ( filter ) {
+    continue;
+  } else {
+    newBufferContent.append(line);
+    newBufferContent.append('\n');
+  }  
+}
+
+newBuffer = jEdit.newFile(view);
+newBuffer.insert(0, newBufferContent.toString());
+newBuffer.setMode( "xslog" );

@@ -1,0 +1,14 @@
+import java.text.SimpleDateFormat;
+
+cal = Calendar.getInstance();
+currentDayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+monday = 2;
+daysToLastWeeksMonday = monday - currentDayOfWeek - 7;
+cal.add(Calendar.DATE, daysToLastWeeksMonday);
+weekStart = cal.getTime();
+cal.add(Calendar.DATE, 4);
+weekEnd = cal.getTime();
+df = new SimpleDateFormat("[YYY-MM-dd E]");
+end = df.format(weekEnd);
+start = df.format(weekStart);
+textArea.setSelectedText(start + "-" + end);

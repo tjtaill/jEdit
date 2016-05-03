@@ -1,0 +1,5 @@
+SearchAndReplace.setSearchString("^SIP/2\\.0 18\\d.*$");
+SearchAndReplace.setAutoWrapAround(true);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.hyperSearch(view);

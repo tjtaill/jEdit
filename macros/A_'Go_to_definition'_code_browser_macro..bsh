@@ -1,0 +1,335 @@
+
+/*
+ * Open_Selected_Class.bsh - a BeanShell macro script for the
+ * jEdit text editor - Opens a selected class.  Class can either be an
+ * import statement or a class name within a source file or a qualified class.
+ *
+ * Copyright (C) 2003 Steve Ewart  sewart@bigfoot.com
+ * Version 1.3
+ *
+ * Source code for the highlighted class will be opened if:
+ *   The cursor is on a class name in any part of the file AND
+ *       there is a import for the class OR
+ *       there is a wildcard import contaning the class OR
+ *       the class is in the current package (current directory) OR
+ *       the class is in the java.lang source directory (searchPath must be set)
+ *       the class is in a different project than current project (searchPath must be set)
+ *   The cursor is on a line with an import statement
+ *   A fully qualified class is highlighted (not necessarily an import statment)
+ *
+ * Limitations:
+ *    It cannot open a file if the package cannot be appended to any part of the
+ *       current file's directory structure.
+ *    It only works with java files, other languages are not supported.
+ *    Will only find (scroll to) inner clsses if it is in an import.
+ *
+ * To Do:
+ *    Autofind java src directory. Anyone know how?
+ *    Fix bug with focus issue in findSearchText()
+ *    Turn the code into a plugin so that the user can set multiple paths and
+ *      allow the user to enter them into a GUI instead of the source file.
+ *
+ * Log:
+ *    1.3 9/08/03 Steve Ewart Fixed java.lang classes by removing extra .java
+ *    1.2 8/18/03 Steve Ewart Added searchPath
+ *    1.2 8/18/03 Steve Ewart Opens and scrolls to inner classes if in an import
+ *    1.1 8/10/03 Nicholas Nemtsev Added ability to open imports with *'s
+ *    1.1 8/10/03 Nicholas Nemtsev Fixed check of empty selection
+ *    1.0 Changed logic so that opening an import does not cause a beep.
+ *    1.0 Fixed index to start at top of page (vice 1) to find imports
+ *    1.0 Added ability to open a fully qualified class
+ *    1.0 Added ability to open a class in java.lang
+ *    1.0 Added ability to open a class other than an import
+ */
+
+// semicolon separated paths to be prepended as a base path.
+// Example:  "v:\\src\\path1;x:\\project\\;c:\\"
+String searchPath = "v:\\java\\src;v:\\jconn2;"; //  <-- set this to your java src directory
+                                                       //      or any other path
+
+void begin()
+{
+    // Check if the curent line (reguardless of the selected text) is an
+    // import statement and if it can be opened.
+
+    // Get the current line number.
+    int linenum = textArea.getCaretLine();
+    found = openImport(linenum);
+
+    // Sometimes extra spaces are highlighted so remove them.
+    String selectedText = textArea.getSelectedText();
+    if (selectedText != null && selectedText.indexOf(' ') > -1)
+    {
+        selectedText = selectedText.trim();
+    }
+
+    if(!found)
+    {
+        // Check if a fully qualified class is selected.
+        // A file in the current package also works for a fullt qualified class
+        if (selectedText != null && selectedText != "")
+        {
+            // turn the package into a path.
+            String path = selectedText.replace('.', File.separatorChar);
+            found = openGivenPath(path);
+        }
+    }
+
+    // Check if there is an import for the selected class.
+    if(!found)
+    {
+        // NOTE:
+        // There is a focus problem with textArea.selectWord() and SpeedJava.
+        // SpeedJava plugin has focus issues after this macro opens a file if
+        // the word was selected using findSearchText().
+        // disable findSearchText() if you are using SpeedJava.
+
+        // Get the text under the cursor.
+        // Select the word if one is not selected.
+        // findSearchText();
+        selectedText = textArea.getSelectedText();
+        if (selectedText == null || selectedText == "")
+        {
+           view.getToolkit().beep();
+           return;
+        }
+
+        // Check the imports for the selected class name.
+        // If there is an import for the selected text then open the import.
+        for (int i = 0; i < textArea.getLineCount();i++)
+        {
+              String lineText = textArea.getLineText(i);
+              if ((lineText.indexOf(linePrefix) > -1) &&
+                (lineText.indexOf("." + selectedText + ";") > -1))
+              {
+                 found = openImport(i);
+                 if (found) return;
+              }
+              // Look for a wild card in an import.
+              else if ((lineText.indexOf(linePrefix) > -1) &&
+                  (lineText.indexOf(".*;") > -1))
+              {
+                  int spacePos=lineText.indexOf(" ");
+                  if(spacePos > 0)
+                  {
+                      // Remove anything before the first space (import)
+                      // Replace wildcard *; with class name
+                      String importString = lineText.substring(spacePos+1).replaceFirst("\\*;.*",selectedText);
+                      // Change all . to \
+                      String path = importString.replace('.', File.separatorChar);
+                      // Remove any extra spaces between import and beginning of package.
+                      path = path.trim();
+                      // Try to open the path.
+                      found = openGivenPath(path);
+                      if(found) return;
+                  }
+              }
+        }
+    }
+
+    // Check if the file is in java.lang since java.lang won't have an import
+    if (!found)
+    {
+          String path = "java" + File.separator +
+                        "lang" + File.separator +
+                        selectedText;
+
+          found = openGivenPath (path);
+    }
+
+    if (!found)
+    {
+      view.getToolkit().beep();
+    }
+}
+
+/*
+      Converts the give line to a path and tries to open it.
+      linenum  the line for the import to attempt to open.
+*/
+boolean openImport(int linenum)
+{
+      boolean found = false;
+
+      // Uses the path for the current buffer to
+      // search for the import class.  It works it's way up the
+      // path checking each path + package
+      selectedText = textArea.getSelectedText();
+      // Get the entire current line.
+      path = textArea.getLineText(linenum);
+      path = path.trim();
+
+      // If the current line doesn't contain an import, exit
+      if (path != null && (path.indexOf(linePrefix) > -1))
+      {
+          // remove "import "
+          path = path.substring(linePrefix.length());
+          // turn the package into a path.
+          path = path.replace('.', File.separatorChar);
+          // remove the ending semicolon
+          path = path.replace(';', ' ');
+          path = path.trim();
+
+          found = openGivenPath(path);
+
+          if (!found)
+          {
+              lastSeparator = path.lastIndexOf(File.separatorChar);
+              path = path.substring (0 , lastSeparator);
+
+              found = openGivenPath(path);
+              if (found)
+              {
+                  // Try to scroll to the class declaration.
+                  SearchAndReplace.setSearchString("class " + selectedText);
+                  SearchAndReplace.setAutoWrapAround(true);
+                  SearchAndReplace.setReverseSearch(false);
+                  SearchAndReplace.setIgnoreCase(true);
+                  SearchAndReplace.setRegexp(false);
+                  SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+                  SearchAndReplace.find(view);
+              }
+          }
+
+          return found;
+      }
+      else
+      {
+          return false;
+      }
+      return true;
+}
+
+/* openGivenPath(String path)
+ *
+ * Takes a path (without the base dir) and tries
+ * to open it based on the current directory by traversing up the directory
+ * until it is found or the root dir is reached.  It then tries the directories
+ * in the searchPath.
+ */
+boolean openGivenPath(String path)
+{
+      // Uses the path for the current buffer to
+      // search for the import class.  It works it's way up the
+      // path checking each path + package
+
+     String baseDir = buffer.getPath();
+
+      path = path + fileExtension;
+      File importfile = new File(baseDir + File.separator + path);
+      // Traverse up the path until the file is found or bust.
+      while(baseDir != null &&
+            baseDir.lastIndexOf(File.separator, baseDir.length()) > -1 &&
+            !importfile.exists())
+      {
+          // Remove the last directory c:\steve\com\acme -> c:\steve\com
+          lastIndex = baseDir.lastIndexOf(File.separator, baseDir.length());
+          baseDir = baseDir.substring(0, lastIndex);
+          importfile = new File(baseDir + File.separator + path);
+      }
+      // Open the file if it was found.
+      if(importfile.exists())
+      {
+         jEdit.openFile(view, baseDir + File.separator + path);
+         return true;
+      }
+
+      // Try every entry in the searchPath variable
+      StringTokenizer st = new StringTokenizer(searchPath, ";");
+      while (st.hasMoreTokens())
+      {
+          baseDir = st.nextToken();
+          importfile = new File(baseDir + File.separator + path);
+          // Open the file if it was found.
+          if(importfile.exists())
+          {
+              jEdit.openFile(view, baseDir + File.separator + path);
+              return true;
+          }
+      }
+
+      // bust
+      return false;
+}
+
+/* isPosWordChar()
+ *
+ * this determines if the character at the given position
+ * in the text area is a 'word' character, taking
+ * into account the characters that are considered
+ * part of a word in the buffer's current edit mode
+ */
+boolean isPosWordChar( int pos)
+{
+    noWordSep = buffer.getProperty("noWordSep");
+    charMark = textArea.getText(pos, 1);
+    ch = charMark.charAt(0);
+    return Character.isLetterOrDigit(ch) ||
+        noWordSep.indexOf(ch) != -1;
+}
+
+/* findSearchText()
+ *
+ * this will select the word on or immediately to
+ * the left of the caret; it returns false if the caret
+ * is not on or next to a word
+ */
+boolean findSearchText()
+{
+    startPos = textArea.getCaretPosition();
+
+    jEdit.setTemporaryProperty("temp.findXXX.bufferName",
+        buffer.getPath());
+    jEdit.setTemporaryProperty("temp.findXXX.caretPosition",
+        String.valueOf(startPos));
+    textArea.selectWord();
+	selections = textArea.getSelection();
+
+    if (textArea.getSelectionCount() == 0)
+    {
+        return false;
+    }
+
+    mark = selections[0].getStart();
+    if(!isPosWordChar(mark))
+    {
+        if( mark > 0)
+        {
+            // try one character to the left; the caret may
+            // be next to a word instead of on top of it
+            textArea.setCaretPosition(startPos);
+            textArea.goToPrevCharacter(false);
+            textArea.selectWord();
+			selections = textArea.getSelection();
+        }
+        if( mark == 0 || !isPosWordChar(selections[0].getStart()))
+        {
+            // resetAfterFailure();
+            // Macros.error(view, "The caret was not located at a word.");
+            return false;
+        }
+    }
+    return true;
+}
+
+String linePrefix = "import";
+String fileExtension = ".java";
+
+begin();
+/*
+	Macro index data (in DocBook format)
+
+<listitem>
+    <para><filename>Open_Selected_Class.bsh</filename></para>
+    <abstract><para>
+        Opens the source file for the currently selected class name.
+    </para></abstract>
+</listitem>
+
+*/
+
+
+// end Open_Selected_Class.bsh
+
+
+

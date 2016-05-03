@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE MODES SYSTEM "catalog.dtd">
+
+<MODES>
+
+<!-- Add lines like the following, one for each edit mode you add: -->
+<!-- <MODE NAME="foo" FILE="foo.xml" FILE_NAME_GLOB="*.foo" /> -->
+	<MODE NAME="xslog" FILE="xslog.xml" FILE_NAME_GLOB="*.xslog"/>
+  <MODE NAME="pslog" FILE="pslog.xml" FILE_NAME_GLOB="*.pslog"/>
+	<MODE NAME="plant" FILE="plant.xml" FILE_NAME_GLOB="*.plant"/>
+	<MODE NAME="bwcscf" FILE="bwcscf.xml" FILE_NAME_GLOB="*.bwcscf"/>
+	<MODE NAME="slv" FILE="slv.xml" FILE_NAME_GLOB="*.slv"/>
+	<MODE NAME="org" FILE="org.xml" FILE_NAME_GLOB="*.org"/>
+	<MODE NAME="pic" FILE="pic.xml" FILE_NAME_GLOB="*.pic"/>
+	<MODE NAME="markdown" FILE="markdown.xml" FILE_NAME_GLOB="*.md"/>
+	<MODE NAME="antlr4" FILE="antlr4.xml" FILE_NAME_GLOB="*.g4"/>
+	<MODE NAME="conf" FILE="conf.xml" FILE_NAME_GLOB="*.conf"/>
+</MODES>

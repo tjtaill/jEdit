@@ -1,0 +1,10 @@
+console.ConsolePlugin.compile(view,buffer);
+path = buffer.getPath();
+path += ".png";
+waitForConsole(view);
+imageviewer = view.getDockableWindowManager().getDockable("imageviewer");
+view.getDockableWindowManager().getRightDockingArea().showMostRecent();
+try {
+	imageviewer.showImage(path, true);
+} catch(ex) {	
+}

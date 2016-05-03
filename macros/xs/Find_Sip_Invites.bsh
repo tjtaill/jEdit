@@ -1,0 +1,5 @@
+SearchAndReplace.setSearchString("^INVITE sip:.*$");
+SearchAndReplace.setAutoWrapAround(true);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.hyperSearch(view);

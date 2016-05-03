@@ -1,0 +1,44 @@
+import org.w3c.dom.ls.LSResourceResolver;
+import org.w3c.dom.ls.LSInput;
+import javax.xml.XMLConstants;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Schema;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.io.IOUtils;
+import javax.xml.transform.stream.StreamSource;
+import validateschema.ResourceResolver;
+import errorlist.*;
+import org.xml.sax.SAXParseException;
+
+DefaultErrorSource errsrc = new DefaultErrorSource("", view);
+ErrorSource.registerErrorSource(errsrc);
+
+SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+sf.setResourceResolver( new ResourceResolver(buffer) );
+bt = buffer.getText();
+
+
+sources = errorlist.ErrorSource.getErrorSources();
+for(i = 0; i < sources.length; i++)
+{
+  if((sources[i].getView() != null) && 
+    (sources[i].getView() != view)) continue;
+	
+  if(sources[i] instanceof errorlist.DefaultErrorSource)
+    sources[i].clear();
+}
+			
+if ((view != null) && jEdit.getBooleanProperty("error-list.autoCloseOnNoErrors"))
+  view.getDockableWindowManager().hideDockableWindow("error-list");
+
+try {
+  is = IOUtils.toInputStream(bt, "UTF-8");
+  s = sf.newSchema( new StreamSource(is) );
+} catch(SAXParseException e) {
+  line = e.getLineNumber() - 1;
+  column = buffer.getLineLength(line);
+  message = e.getMessage();
+  DefaultErrorSource.DefaultError err = new DefaultErrorSource.DefaultError(errsrc, ErrorSource.ERROR, buffer.getName(), line, 0, column, message);
+  errsrc.addError(err);
+  wm.showDockableWindow("error-list");
+}

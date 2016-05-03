@@ -1,0 +1,18 @@
+valid = true;
+filePath =  buffer.getPath();
+
+if ( filePath.endsWith("plant") ) {
+    valid = plantplugin.PlantPlugin.validatePlant(buffer);
+}
+
+if ( valid ) {
+  console.ConsolePlugin.compile(view,buffer);
+  waitForConsole(view);
+  wm.showDockableWindow("batik-svg-viewer");
+  imageViewer = wm.getDockableWindow("batik-svg-viewer");
+  
+
+  index = filePath.lastIndexOf(".");
+  filePath = filePath.substring(0, index + 1) + "svg";
+  imageViewer.openSvg(editPane, filePath);
+}

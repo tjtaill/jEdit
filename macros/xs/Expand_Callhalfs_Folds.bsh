@@ -1,0 +1,35 @@
+// input list of call half sessions to expand
+callHalfsInput = Macros.input(view, "Call Halfs To Expand:");
+
+callHalfs = callHalfsInput.split(" "); 
+
+regexBuilder = new StringBuilder();
+
+regexBuilder.append("\\| callhalf-(?:");
+
+for ( i = 0; i < callHalfs.length; i++ ) {
+  regexBuilder.append(callHalfs[i]);  
+  if ( i != callHalfs.length - 1 ) {
+      regexBuilder.append("|");      
+  }
+}
+regexBuilder.append(")");
+
+// go to begining of document
+textArea.goToBufferStart(false);
+
+// collapse all folds
+textArea.getDisplayManager().expandFolds(1);
+
+SearchAndReplace.setSearchString(regexBuilder.toString());
+SearchAndReplace.setAutoWrapAround(false);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setReverseSearch(false);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+
+while ( SearchAndReplace.find(view) ) {
+	// expand current fold
+	textArea.expandFold(false);		
+}
+
+textArea.goToBufferStart(false);

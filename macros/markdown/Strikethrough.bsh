@@ -1,0 +1,10 @@
+textArea.goToStartOfWhiteSpace(false);
+position = textArea.getCaretPosition();
+currentChar = textArea.getText(position, 1);
+while( currentChar.matches("[\\s#>\\-\\+\\*\\d\\.]") ) {
+    currentChar = textArea.getText(++position, 1);
+}
+textArea.setCaretPosition(position);
+textArea.setSelectedText("<s>");
+textArea.goToEndOfLine(false);
+textArea.setSelectedText("</s>");

@@ -1,0 +1,5 @@
+SearchAndReplace.setSearchString("\".+?Request.*?\"");
+SearchAndReplace.setAutoWrapAround(true);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.find(view);

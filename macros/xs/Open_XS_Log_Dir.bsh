@@ -1,0 +1,1 @@
+GUIUtilities.showVFSFileDialog(view,"sftp://bwadmin@xs:22/var/broadworks/logs/appserver/",VFSBrowser.BROWSER_DIALOG,true);

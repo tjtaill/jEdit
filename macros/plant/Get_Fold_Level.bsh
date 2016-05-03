@@ -1,0 +1,3 @@
+foldLevel = buffer.getFoldLevel( textArea.getCaretLine() );
+Macros.message(view, "Fold Level: " + foldLevel);
+

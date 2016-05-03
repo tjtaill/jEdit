@@ -1,0 +1,14 @@
+if (textArea.getSelectionCount() == 0) {
+	textArea.selectWord();	
+}
+
+
+if (textArea.getSelectionCount() > 0)
+{
+	SearchAndReplace.setSearchString(textArea.getSelectedText());
+	SearchAndReplace.setAutoWrapAround(true);
+	SearchAndReplace.setIgnoreCase(false);
+	SearchAndReplace.setRegexp(false);
+	SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+	SearchAndReplace.find(view);
+}

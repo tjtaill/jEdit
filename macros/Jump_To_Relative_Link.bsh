@@ -1,0 +1,18 @@
+source (MiscUtilities.constructPath(dirname(scriptPath), "Select_Between.bsh"));
+
+import java.nio.file.*;
+
+baseDir = "C:\\svn\\working\\ttaillefer\\BW-9274\\BRANCH1\\BUILD\\ant\\custom\\XS\\";
+
+/*
+TODO : perhaps use character sets or regex for boundaries instead just a single
+character separator  
+*/
+if (textArea.getSelectionCount() == 0) {
+  selectBetween(" ", " ");    
+}
+
+Path basePath = Paths.get(baseDir, new String[]{});
+relativeFile = textArea.getSelectedText();
+Path absolutePath = basePath.resolve(relativeFile);
+jEdit.openFile(view, absolutePath.toString());

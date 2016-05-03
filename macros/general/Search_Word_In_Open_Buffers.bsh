@@ -1,0 +1,12 @@
+if (textArea.getSelectionCount() == 0) {
+	textArea.selectWord();	
+}
+
+if (textArea.getSelectionCount() > 0)
+{
+  selectedText = textArea.getSelectedText();
+  SearchAndReplace.setSearchString(selectedText);
+  SearchAndReplace.setRegexp(false);
+  SearchAndReplace.setSearchFileSet(new AllBufferSet("*.*", view));
+  SearchAndReplace.hyperSearch(view);
+}

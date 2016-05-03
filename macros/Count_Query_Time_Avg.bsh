@@ -1,0 +1,29 @@
+import java.util.regex.*;
+
+textArea.goToBufferStart(false);
+
+linkRegex = "\\d\\.\\d\\d\\d\\d\\d\\d";
+linkPattern = Pattern.compile(linkRegex);
+
+sum = 0.0;
+count = 0;
+
+for (lineNumber = 0; lineNumber < buffer.getLineCount(); lineNumber++) {
+  line = buffer.getLineText(lineNumber);
+  matcher = linkPattern.matcher(line);
+  if ( matcher.find() ) {
+    sum += Float.parseFloat(matcher.group(0));
+    count++;
+  }
+}
+
+Macros.message(view, "Avg. time: " + sum / count);
+
+
+
+
+
+
+
+
+

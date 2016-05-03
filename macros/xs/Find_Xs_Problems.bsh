@@ -1,0 +1,5 @@
+SearchAndReplace.setSearchString("\\s(?:Exception|Warn|Notice|SIP/2.0 [456]\\d{2})\\s");
+SearchAndReplace.setAutoWrapAround(true);
+SearchAndReplace.setRegexp(true);
+SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+SearchAndReplace.hyperSearch(view);

@@ -1,0 +1,25 @@
+import java.util.regex.*;
+
+
+
+if (textArea.getSelectionCount() == 0) {
+	textArea.selectLine();	
+}
+
+if (textArea.getSelectionCount() > 0)
+{
+  pattern = Pattern.compile("^CSeq:\\s*(\\d+)\\s+(\\S+)");
+  
+  selected = textArea.getSelectedText();
+  matcher = pattern.matcher( selected );
+  
+  if ( matcher.find() ) {
+    search = "CSeq:\\s*" + matcher.group(1) + "\\s+" + matcher.group(2) + ".*$";
+    SearchAndReplace.setSearchString(search);
+    SearchAndReplace.setAutoWrapAround(true);
+    SearchAndReplace.setIgnoreCase(false);
+    SearchAndReplace.setRegexp(true);
+    SearchAndReplace.setSearchFileSet(new CurrentBufferSet());
+    SearchAndReplace.hyperSearch(view);
+  }
+}

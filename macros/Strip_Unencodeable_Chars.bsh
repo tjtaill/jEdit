@@ -1,0 +1,12 @@
+import java.nio.charset.Charset;
+import java.nio.charset.CodingErrorAction;
+import java.nio.ByteBuffer;
+
+decoder = Charset.forName("Cp1252").newDecoder();
+decoder.onMalformedInput(CodingErrorAction.REPLACE);
+decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+bb = ByteBuffer.wrap( buffer.getText().getBytes() );
+parsed = decoder.decode(bb);
+buffer.remove(0, buffer.getLength());
+buffer.insert(0, parsed);
+

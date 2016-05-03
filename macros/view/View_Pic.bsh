@@ -1,0 +1,6 @@
+console.ConsolePlugin.compile(view,buffer);
+path = buffer.getPath().split("\\.")[0] + ".txt";
+view.splitVertically();
+editPanes = view.getEditPanes();
+waitForConsole(view);
+jEdit.openFile(editPanes[1], path);

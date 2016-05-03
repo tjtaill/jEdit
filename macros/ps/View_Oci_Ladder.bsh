@@ -1,0 +1,38 @@
+source (MiscUtilities.constructPath(dirname(scriptPath), "Get_Current_Directory.bsh"));
+
+oldPath = path = buffer.getPath();
+newPath = "";
+if ( oldPath.startsWith("sftp://") ) {
+  // copy buffer file to temp directory
+  fileName = buffer.getName();
+  tempDir = System.getProperty("java.io.tmpdir");
+  copyTo = tempDir + fileName;
+  buffer.save(view, copyTo, false, true);
+  
+  index = copyTo.lastIndexOf(".");
+  newPath = copyTo.substring(0, index + 1) + "svg";    
+  command = "\"C:\\programs\\scripts\\psToSvg.bat\" " +  copyTo;    
+  runCommandInConsole(view,"System", command);
+  waitForConsole(view);  
+} else {
+  console.ConsolePlugin.compile(view,buffer);
+  waitForConsole(view);  
+  index = buffer.getPath().lastIndexOf(".");
+  newPath = buffer.getPath().substring(0, index + 1) + "svg";
+}
+
+wm.showDockableWindow("batik-svg-viewer");
+svgViewer = wm.getDockableWindow("batik-svg-viewer");
+svgViewer.openSvg(editPane, newPath);
+
+
+
+/*
+view.splitVertically();
+editPanes = view.getEditPanes();
+waitForConsole(view);
+jEdit.openFile(editPanes[1], newPath);
+*/
+
+
+

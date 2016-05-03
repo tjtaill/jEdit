@@ -1,0 +1,18 @@
+/*
+XML commenting: adding/removing <!-- -->
+*/
+
+selectedText = textArea.getSelectedText();
+if (selectedText.contains("<!-- ") && selectedText.contains(" -->")) {
+    // Uncomments the selected text
+    selectedText = selectedText.replace("<!-- ","");
+    selectedText = selectedText.replace(" -->","");
+    textArea.setSelectedText(selectedText);
+}
+else {
+    // Comments the selected text
+    if (textArea.getSelectedText() != null)
+        textArea.setSelectedText("<!-- " + textArea.getSelectedText() + " -->");
+    else
+        textArea.setSelectedText("<!--  -->");
+}

@@ -1,0 +1,4 @@
+parts = buffer.getPath().split("\\.");
+path = parts[0] + "-1.pdf";
+command = "start " + path;
+runInSystemShell(view, command);

@@ -1,0 +1,10 @@
+sum = 0.0;
+
+for (lineNumber = 0; lineNumber < buffer.getLineCount(); lineNumber++) {
+  line = buffer.getLineText(lineNumber);
+  sum += Double.valueOf(line);
+}
+
+avg = sum / buffer.getLineCount();
+
+Macros.message(view, String.valueOf(avg));
