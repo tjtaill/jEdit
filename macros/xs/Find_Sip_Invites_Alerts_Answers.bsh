@@ -1,4 +1,4 @@
-SearchAndReplace.setSearchString("^(?:INVITE|SIP/2\\.0) (?:sip:|18\\d|200).*$");
+SearchAndReplace.setSearchString("^(?:INVITE|SIP/2\\.0) (?:sip:|tel:|18\\d|200).*$");
 SearchAndReplace.setAutoWrapAround(true);
 SearchAndReplace.setRegexp(true);
 SearchAndReplace.setSearchFileSet(new CurrentBufferSet());

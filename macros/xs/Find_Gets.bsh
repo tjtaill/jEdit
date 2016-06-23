@@ -1,4 +1,4 @@
-SearchAndReplace.setSearchString("^INVITE (:?sip|tel):.*$");
+SearchAndReplace.setSearchString("^(:?Resource-Priority:).*$");
 SearchAndReplace.setAutoWrapAround(true);
 SearchAndReplace.setRegexp(true);
 SearchAndReplace.setSearchFileSet(new CurrentBufferSet());

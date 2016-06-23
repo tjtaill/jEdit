@@ -15,4 +15,5 @@
 	<MODE NAME="markdown" FILE="markdown.xml" FILE_NAME_GLOB="*.md"/>
 	<MODE NAME="antlr4" FILE="antlr4.xml" FILE_NAME_GLOB="*.g4"/>
 	<MODE NAME="conf" FILE="conf.xml" FILE_NAME_GLOB="*.conf"/>
+	<MODE NAME="dtslog" FILE="dtslog.xml" FILE_NAME_GLOB="*.dtslog"/>
 </MODES>

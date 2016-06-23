@@ -1,0 +1,12 @@
+path = buffer.getPath();
+console.ConsolePlugin.run(view,buffer);
+waitForConsole(view);
+view.getDockableWindowManager().showDockableWindow("imageviewer");
+imageViewer = view.getDockableWindowManager().getDockableWindow("imageviewer");
+  
+index = path.lastIndexOf(".");
+path = path.substring(0, index) + "-0.png";
+try {
+  imageViewer.showImage(path, true);
+} catch(ex) {
+}
